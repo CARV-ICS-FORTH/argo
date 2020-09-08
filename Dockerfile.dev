@@ -3,23 +3,36 @@
 # Initial stage which pulls prepares build dependencies and CLI tooling we need for our final image
 # Also used as the image in CI jobs so needs all dependencies
 ####################################################################################################
-FROM golang:1.13.4 as builder
+FROM centos:7.7.1908 as builder
 
+# Install Go 1.13.4 and install any packages required for building
+RUN yum install -y curl && \
+    yum clean all \
+    && rm -rf /var/cache/yum \
+        /tmp/* \
+        /var/tmp/* \
+        /usr/share/man \
+        /usr/share/doc \
+        /usr/share/doc-base
+
+ENV GOLANG_VERSION=1.13.4
+RUN curl -L -o go.tgz https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go.tgz && \
+    rm -f go.tgz
+
+ENV GOPATH=/go
+ENV PATH=/go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
+
+WORKDIR /go
+
+# Back to Argo builder
 ARG IMAGE_OS=linux
 ARG IMAGE_ARCH=amd64
 
-RUN apt-get update && apt-get --no-install-recommends install -y \
-    git \
-    make \
-    apt-utils \
-    apt-transport-https \
-    ca-certificates \
-    wget \
-    gcc \
-    zip && \
-    apt-get clean \
-    && rm -rf \
-        /var/lib/apt/lists/* \
+RUN yum install -y git which make openssl ca-certificates wget gcc zip && \
+    yum clean all \
+    && rm -rf /var/cache/yum \
         /tmp/* \
         /var/tmp/* \
         /usr/share/man \
@@ -44,7 +57,7 @@ RUN if [ "${IMAGE_OS}" = "linux" -a "${IMAGE_ARCH}" = "amd64" ]; then \
 # argoexec-base
 # Used as the base for both the release and development version of argoexec
 ####################################################################################################
-FROM debian:10.3-slim as argoexec-base
+FROM carvicsforth/h3:1.0 as argoexec-base
 
 ARG IMAGE_OS=linux
 ARG IMAGE_ARCH=amd64
@@ -52,11 +65,9 @@ ARG IMAGE_ARCH=amd64
 # NOTE: keep the version synced with https://storage.googleapis.com/kubernetes-release/release/stable.txt
 ENV KUBECTL_VERSION=1.15.1
 ENV JQ_VERSION=1.6
-RUN apt-get update && \
-    apt-get --no-install-recommends install -y curl procps git apt-utils apt-transport-https ca-certificates tar mime-support && \
-    apt-get clean \
-    && rm -rf \
-        /var/lib/apt/lists/* \
+RUN yum install -y curl git ca-certificates mailcap && \
+    yum clean all \
+    && rm -rf /var/cache/yum \
         /tmp/* \
         /var/tmp/* \
         /usr/share/man \
@@ -88,9 +99,18 @@ ENTRYPOINT [ "workflow-controller" ]
 ####################################################################################################
 # argocli
 ####################################################################################################
-FROM scratch as argocli
+FROM carvicsforth/h3:1.0 as argocli
+
+RUN yum install -y ca-certificates && \
+    yum clean all \
+    && rm -rf /var/cache/yum \
+        /tmp/* \
+        /var/tmp/* \
+        /usr/share/man \
+        /usr/share/doc \
+        /usr/share/doc-base
+
 COPY --from=argoexec-base /etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts
-COPY --from=argoexec-base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY argo-server.crt argo-server.crt
 COPY argo-server.key argo-server.key
 COPY argo /bin/

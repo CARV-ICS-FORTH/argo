@@ -977,6 +977,16 @@ func (woc *wfOperationCtx) addArchiveLocation(tmpl *wfv1.Template) error {
 			},
 			Key: artLocationKey,
 		}
+	} else if h3Location := woc.artifactRepository.H3; h3Location != nil {
+		woc.log.Debugf("Setting H3 artifact repository information")
+		artLocationKey := h3Location.KeyFormat
+		if artLocationKey == "" {
+			artLocationKey = common.DefaultArchivePattern
+		}
+		tmpl.ArchiveLocation.H3 = &wfv1.H3Artifact{
+			H3Bucket: h3Location.H3Bucket,
+			Key:      artLocationKey,
+		}
 	} else {
 		return errors.Errorf(errors.CodeBadRequest, "controller is not configured with a default archive location")
 	}

@@ -719,6 +719,9 @@ type ArtifactLocation struct {
 
 	// GCS contains GCS artifact location details
 	GCS *GCSArtifact `json:"gcs,omitempty" protobuf:"bytes,9,opt,name=gcs"`
+
+	// H3 contains H3 artifact location details
+	H3 *H3Artifact `json:"h3,omitempty" protobuf:"bytes,10,opt,name=h3"`
 }
 
 // HasLocation whether or not an artifact has a location defined
@@ -730,7 +733,8 @@ func (a *ArtifactLocation) HasLocation() bool {
 		a.Raw.HasLocation() ||
 		a.HDFS.HasLocation() ||
 		a.OSS.HasLocation() ||
-		a.GCS.HasLocation()
+		a.GCS.HasLocation() ||
+		a.H3.HasLocation()
 }
 
 type ArtifactRepositoryRef struct {
@@ -1611,6 +1615,27 @@ type OSSArtifact struct {
 
 func (o *OSSArtifact) HasLocation() bool {
 	return o != nil && o.Bucket != "" && o.Endpoint != "" && o.Key != ""
+}
+
+// H3Bucket contains the access information required for interfacing with an H3 bucket
+type H3Bucket struct {
+	// StorageUri is the storage provider URI for H3
+	StorageUri string `json:"storageUri" protobuf:"bytes,1,opt,name=storageUri"`
+
+	// Bucket is the name of the H3 bucket
+	Bucket string `json:"bucket" protobuf:"bytes,2,opt,name=bucket"`
+}
+
+// H3Artifact is the location of an H3 artifact
+type H3Artifact struct {
+	H3Bucket `json:",inline" protobuf:"bytes,1,opt,name=h3Bucket"`
+
+	// Key is the key in the bucket where the artifact resides
+	Key string `json:"key" protobuf:"bytes,2,opt,name=key"`
+}
+
+func (s *H3Artifact) HasLocation() bool {
+	return s != nil && s.StorageUri != "" && s.Bucket != ""
 }
 
 // ExecutorConfig holds configurations of an executor container.

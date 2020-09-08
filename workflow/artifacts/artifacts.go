@@ -14,6 +14,7 @@ import (
 	"github.com/argoproj/argo/workflow/artifacts/raw"
 	"github.com/argoproj/argo/workflow/artifacts/resource"
 	"github.com/argoproj/argo/workflow/artifacts/s3"
+	"github.com/argoproj/argo/workflow/artifacts/h3"
 )
 
 // ArtifactDriver is the interface for loading and saving of artifacts
@@ -147,6 +148,13 @@ func NewDriver(art *wfv1.Artifact, ri resource.Interface) (ArtifactDriver, error
 			driver.ServiceAccountKey = serviceAccountKey
 		}
 		// key is not set, assume it is using Workload Idendity
+		return &driver, nil
+	}
+
+	if art.H3 != nil {
+		driver := h3.H3ArtifactDriver{
+			StorageUri: art.H3.StorageUri,
+		}
 		return &driver, nil
 	}
 

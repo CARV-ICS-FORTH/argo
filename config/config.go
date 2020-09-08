@@ -127,6 +127,8 @@ type ArtifactRepository struct {
 	OSS *OSSArtifactRepository `json:"oss,omitempty"`
 	// GCS stores artifact in a GCS object store
 	GCS *GCSArtifactRepository `json:"gcs,omitempty"`
+	// H3 stores artifact in an H3 object store
+	H3 *H3ArtifactRepository `json:"h3,omitempty"`
 }
 
 func (a *ArtifactRepository) IsArchiveLogs() bool {
@@ -232,6 +234,14 @@ type HDFSArtifactRepository struct {
 
 	// Force copies a file forcibly even if it exists (default: false)
 	Force bool `json:"force,omitempty"`
+}
+
+// H3ArtifactRepository defines the controller configuration for an H3 artifact repository
+type H3ArtifactRepository struct {
+	wfv1.H3Bucket `json:",inline"`
+
+	// KeyFormat is defines the format of how to store keys. Can reference workflow variables
+	KeyFormat string `json:"keyFormat,omitempty"`
 }
 
 // MetricsConfig defines a config for a metrics server
