@@ -13,7 +13,7 @@
   "info": {
     "description": "Argo",
     "title": "Argo",
-    "version": "v2.10.1"
+    "version": "v2.10.1-H3"
   },
   "paths": {
     "/api/v1/archived-workflows": {
@@ -2418,6 +2418,20 @@
         "usernameSecret": {
           "description": "UsernameSecret is the secret selector to the repository username",
           "$ref": "#/definitions/io.k8s.api.core.v1.SecretKeySelector"
+        }
+      }
+    },
+    "io.argoproj.workflow.v1alpha1.H3Bucket": {
+      "type": "object",
+      "title": "H3Bucket contains the access information required for interfacing with an H3 bucket",
+      "properties": {
+        "bucket": {
+          "type": "string",
+          "title": "Bucket is the name of the H3 bucket"
+        },
+        "storageUri": {
+          "type": "string",
+          "title": "StorageUri is the storage provider URI for H3"
         }
       }
     },

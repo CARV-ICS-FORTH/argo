@@ -1,7 +1,7 @@
 # Argo
 Argo
 
-## Version: v2.10.1
+## Version: v2.10.1-H3
 
 ### Security
 **BearerToken**  
@@ -995,6 +995,13 @@ GitArtifact is the location of an git artifact
 | revision | string | Revision is the git commit, tag, branch to checkout | No |
 | sshPrivateKeySecret | [io.k8s.api.core.v1.SecretKeySelector](#io.k8s.api.core.v1.secretkeyselector) | SSHPrivateKeySecret is the secret selector to the repository ssh private key | No |
 | usernameSecret | [io.k8s.api.core.v1.SecretKeySelector](#io.k8s.api.core.v1.secretkeyselector) | UsernameSecret is the secret selector to the repository username | No |
+
+#### io.argoproj.workflow.v1alpha1.H3Bucket
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| bucket | string |  | No |
+| storageUri | string |  | No |
 
 #### io.argoproj.workflow.v1alpha1.HDFSArtifact
 

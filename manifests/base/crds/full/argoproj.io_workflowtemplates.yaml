@@ -412,6 +412,19 @@ spec:
                         type: object
                       globalName:
                         type: string
+                      h3:
+                        properties:
+                          bucket:
+                            type: string
+                          key:
+                            type: string
+                          storageUri:
+                            type: string
+                        required:
+                        - bucket
+                        - key
+                        - storageUri
+                        type: object
                       hdfs:
                         properties:
                           addresses:
@@ -1247,6 +1260,19 @@ spec:
                         required:
                         - repo
                         type: object
+                      h3:
+                        properties:
+                          bucket:
+                            type: string
+                          key:
+                            type: string
+                          storageUri:
+                            type: string
+                        required:
+                        - bucket
+                        - key
+                        - storageUri
+                        type: object
                       hdfs:
                         properties:
                           addresses:
@@ -1522,6 +1548,19 @@ spec:
                               type: object
                             globalName:
                               type: string
+                            h3:
+                              properties:
+                                bucket:
+                                  type: string
+                                key:
+                                  type: string
+                                storageUri:
+                                  type: string
+                              required:
+                              - bucket
+                              - key
+                              - storageUri
+                              type: object
                             hdfs:
                               properties:
                                 addresses:
@@ -2394,6 +2433,19 @@ spec:
                                         type: object
                                       globalName:
                                         type: string
+                                      h3:
+                                        properties:
+                                          bucket:
+                                            type: string
+                                          key:
+                                            type: string
+                                          storageUri:
+                                            type: string
+                                        required:
+                                        - bucket
+                                        - key
+                                        - storageUri
+                                        type: object
                                       hdfs:
                                         properties:
                                           addresses:
@@ -3345,6 +3397,19 @@ spec:
                               type: object
                             globalName:
                               type: string
+                            h3:
+                              properties:
+                                bucket:
+                                  type: string
+                                key:
+                                  type: string
+                                storageUri:
+                                  type: string
+                              required:
+                              - bucket
+                              - key
+                              - storageUri
+                              type: object
                             hdfs:
                               properties:
                                 addresses:
@@ -3753,6 +3818,19 @@ spec:
                               type: object
                             globalName:
                               type: string
+                            h3:
+                              properties:
+                                bucket:
+                                  type: string
+                                key:
+                                  type: string
+                                storageUri:
+                                  type: string
+                              required:
+                              - bucket
+                              - key
+                              - storageUri
+                              type: object
                             hdfs:
                               properties:
                                 addresses:
@@ -5269,6 +5347,19 @@ spec:
                                           type: object
                                         globalName:
                                           type: string
+                                        h3:
+                                          properties:
+                                            bucket:
+                                              type: string
+                                            key:
+                                              type: string
+                                            storageUri:
+                                              type: string
+                                          required:
+                                          - bucket
+                                          - key
+                                          - storageUri
+                                          type: object
                                         hdfs:
                                           properties:
                                             addresses:

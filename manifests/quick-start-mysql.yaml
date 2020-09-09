@@ -386,16 +386,9 @@ apiVersion: v1
 data:
   artifactRepository: |
     archiveLogs: true
-    s3:
+    h3:
       bucket: my-bucket
-      endpoint: minio:9000
-      insecure: true
-      accessKeySecret:
-        name: my-minio-cred
-        key: accesskey
-      secretKeySecret:
-        name: my-minio-cred
-        key: secretkey
+      storageUri: redis://127.0.0.1:6379
   links: |
     - name: Example Workflow Link
       scope: workflow
@@ -535,7 +528,7 @@ spec:
         - server
         - --auth-mode
         - client
-        image: argoproj/argocli:v2.10.1
+        image: argoproj/argocli:v2.10.1-H3
         name: argo-server
         ports:
         - containerPort: 2746
@@ -614,11 +607,11 @@ spec:
         - --configmap
         - workflow-controller-configmap
         - --executor-image
-        - argoproj/argoexec:v2.10.1
+        - argoproj/argoexec:v2.10.1-H3
         - --namespaced
         command:
         - workflow-controller
-        image: argoproj/workflow-controller:v2.10.1
+        image: argoproj/workflow-controller:v2.10.1-H3
         name: workflow-controller
       nodeSelector:
         kubernetes.io/os: linux
